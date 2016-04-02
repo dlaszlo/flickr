@@ -29,7 +29,7 @@ public class MultiThreadRunner<T> {
 
         for (int i = 0; i < workers.length; i++) {
             workers[i] = new Thread(new Worker(), threadName + "-" + (i + 1));
-            workers[i].setUncaughtExceptionHandler( new ExceptionHandler());
+            workers[i].setUncaughtExceptionHandler(new ExceptionHandler());
             workers[i].start();
         }
         LOGGER.info("Number of threads: {}", numberOfThreads);
@@ -80,11 +80,9 @@ public class MultiThreadRunner<T> {
         }
     }
 
-    private class Worker implements Runnable
-    {
+    private class Worker implements Runnable {
         @Override
-        public void run()
-        {
+        public void run() {
             try {
                 while (!(shutdown && queue.isEmpty())) {
                     if (error) {
@@ -101,8 +99,7 @@ public class MultiThreadRunner<T> {
         }
     }
 
-    private class ExceptionHandler implements UncaughtExceptionHandler
-    {
+    private class ExceptionHandler implements UncaughtExceptionHandler {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
             LOGGER.error("Error occured in {} thread", t.getName(), e);

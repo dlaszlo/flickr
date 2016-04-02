@@ -18,7 +18,8 @@ import java.util.Map;
  * Javító program: Az MD5 mező feltöltése az Sqlite adatbázisban
  * (hiba miatt a mime típus írodott bele)
  */
-public class FixMd5 {
+public class FixMd5
+{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FixMd5.class);
 
@@ -31,24 +32,24 @@ public class FixMd5 {
         try {
             List<BackupEntry> entries = backupService.list();
             Map<String, BackupEntry> processed = new HashMap<>();
-            for (BackupEntry entry : entries)
-            {
+            for (BackupEntry entry : entries) {
                 processed.put(entry.getPath(), entry);
             }
 
             final Path storagePath = Paths.get(sourceDir);
-            Files.walkFileTree(storagePath, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(storagePath, new SimpleFileVisitor<Path>()
+            {
 
                 @Override
-                public FileVisitResult visitFile(Path source, BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult visitFile(Path source, BasicFileAttributes attrs) throws IOException
+                {
                     if (attrs.isRegularFile()) {
                         String mimeType = Files.probeContentType(source);
                         if (mimeType != null && (mimeType.startsWith("image") || mimeType.startsWith("video"))) {
                             Path relative = storagePath.relativize(source);
                             String title = relative.toString().replace('\\', '/');
                             BackupEntry backupEntry = processed.get(title);
-                            if (backupEntry != null)
-                            {
+                            if (backupEntry != null) {
                                 String md5;
                                 try (InputStream is = Files.newInputStream(source)) {
                                     md5 = DigestUtils.md5Hex(is);
@@ -73,12 +74,14 @@ public class FixMd5 {
         }
     }
 
-    public FixMd5() {
+    public FixMd5()
+    {
         backupService = backupService.getInstance();
         backupService.init(database);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         if (args.length == 1 && "fixmd5".equals(args[0])) {
             FixMd5 fixMd5 = new FixMd5();
             fixMd5.process();

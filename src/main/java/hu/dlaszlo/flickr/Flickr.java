@@ -28,7 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Created by dlasz on 2016. 02. 27..
  */
-public class Flickr {
+public class Flickr
+{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Flickr.class);
 
@@ -47,7 +48,8 @@ public class Flickr {
     private FlickrOauth oauth;
     private FlickrApi api;
 
-    public void download() {
+    public void download()
+    {
         try {
             List<BackupEntry> entries = backupService.list();
             MultiThreadRunner<BackupEntry> multiThreadRunner =
@@ -104,7 +106,8 @@ public class Flickr {
         }
     }
 
-    public void downloadUrls() {
+    public void downloadUrls()
+    {
         try {
             List<BackupEntry> entries = backupService.list();
 
@@ -146,7 +149,8 @@ public class Flickr {
         }
     }
 
-    public void upload() {
+    public void upload()
+    {
         try {
             List<BackupEntry> entries = backupService.list();
             Set<String> processed = new HashSet<>();
@@ -159,9 +163,11 @@ public class Flickr {
 
             final AtomicInteger cnt = new AtomicInteger(0);
 
-            Files.walkFileTree(storagePath, new SimpleFileVisitor<Path>() {
+            Files.walkFileTree(storagePath, new SimpleFileVisitor<Path>()
+            {
                 @Override
-                public FileVisitResult visitFile(Path source, BasicFileAttributes attrs) throws IOException {
+                public FileVisitResult visitFile(Path source, BasicFileAttributes attrs) throws IOException
+                {
                     if (attrs.isRegularFile()) {
                         String mimeType = Files.probeContentType(source);
                         if (mimeType != null && (mimeType.startsWith("image") || mimeType.startsWith("video"))) {
@@ -184,6 +190,8 @@ public class Flickr {
                                 entries.add(backupEntry);
                                 LOGGER.info(backupEntry.toString());
                             }
+                        } else {
+                            LOGGER.warn("Not supported mime type: {}, file: {}", mimeType, source.toString());
                         }
                     }
                     return FileVisitResult.CONTINUE;
@@ -199,11 +207,12 @@ public class Flickr {
         }
     }
 
-    private void loadProperties() {
+    private void loadProperties()
+    {
         try {
             String fileName = System.getProperty("flickr.configurationFile");
             if (StringUtils.isBlank(fileName)) {
-                throw new IllegalArgumentException("A konfigurációs fájl megadása kötelezõ: -Dflickr.configurationFile");
+                throw new IllegalArgumentException("A konfigurï¿½ciï¿½s fï¿½jl megadï¿½sa kï¿½telezï¿½: -Dflickr.configurationFile");
             }
             Path settingsPath = Paths.get(fileName);
             if (Files.notExists(settingsPath)) {
@@ -235,7 +244,8 @@ public class Flickr {
         }
     }
 
-    private void init() {
+    private void init()
+    {
         backupService = BackupService.getInstance();
         backupService.init(database);
 
@@ -248,7 +258,8 @@ public class Flickr {
         api = new FlickrApi(oauth);
     }
 
-    private <T> T retry(FlickrApiCall<T> supplier) {
+    private <T> T retry(FlickrApiCall<T> supplier)
+    {
         T ret;
         int r = 0;
         while (true) {
@@ -276,7 +287,8 @@ public class Flickr {
         return ret;
     }
 
-    private void checkMd5(BackupEntry entry, Path path) throws IOException {
+    private void checkMd5(BackupEntry entry, Path path) throws IOException
+    {
         String md5;
         try (InputStream is = Files.newInputStream(path)) {
             md5 = DigestUtils.md5Hex(is);
@@ -288,12 +300,14 @@ public class Flickr {
         }
     }
 
-    public Flickr() {
+    public Flickr()
+    {
         loadProperties();
         init();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         Flickr flickr = new Flickr();
 
         Options options = new Options();
