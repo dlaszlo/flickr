@@ -316,7 +316,7 @@ public class Flickr
         options.addOption("u", false, "Update download URLs");
         options.addOption("r", false, "Restore");
 
-        CommandLineParser parser = new DefaultParser();
+        CommandLineParser parser = new PosixParser();
         try {
             CommandLine cmd = parser.parse(options, args);
             if (cmd.hasOption("b")) {

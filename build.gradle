@@ -6,6 +6,23 @@ version '1.0'
 
 apply plugin: 'java'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'io.spring.gradle:dependency-management-plugin:0.5.4.RELEASE'
+    }
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+dependencyManagement {
+    imports {
+        mavenBom 'io.spring.platform:platform-bom:2.0.3.RELEASE'
+    }
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -14,16 +31,16 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.httpcomponents:httpclient:4.5.1'
-    compile 'org.apache.httpcomponents:httpmime:4.5.1'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'ch.qos.logback:logback-classic:1.0.13'
-    compile 'org.slf4j:slf4j-api:1.7.16'
-    compile 'ch.qos.logback:logback-classic:1.1.5'
-    compile 'org.eclipse.jetty:jetty-server:9.3.7.v20160115'
-    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'org.apache.httpcomponents:httpclient'
+    compile 'org.apache.httpcomponents:httpmime'
+    compile 'org.apache.commons:commons-lang3'
+    compile 'ch.qos.logback:logback-classic'
+    compile 'org.slf4j:slf4j-api'
+    compile 'ch.qos.logback:logback-classic'
+    compile 'org.eclipse.jetty:jetty-server'
+    compile 'com.google.code.gson:gson'
+    compile 'commons-cli:commons-cli'
     compile 'org.xerial:sqlite-jdbc:3.8.11.2'
-    compile 'commons-cli:commons-cli:1.3.1'
 }
 
 jar {
