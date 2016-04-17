@@ -276,7 +276,7 @@ public class Flickr
                     }
                 }
                 int d = r * retryDelay;
-                LOGGER.error("Error occured, delay: " + d + "ms; {}", t.getMessage());
+                LOGGER.error("Error occured, delay: " + d + "ms;", t);
                 try {
                     Thread.sleep(d);
                 } catch (InterruptedException e) {
